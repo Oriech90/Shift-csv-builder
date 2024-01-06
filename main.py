@@ -3,7 +3,6 @@ import pandas as pd
 import re
 from datetime import datetime, timedelta
 from utils.shift_utils import extract_month_number, get_shift_times
-from calendar_service.cal_setup import get_calendar_service
 
 
 def read_raw_data(filename):
