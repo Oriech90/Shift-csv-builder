@@ -205,8 +205,6 @@ def populate_rows(shifts, filename):
     :rtype: None
     """
 
-    # Remember that if the last rows doesnt have value(should be Day-off), I have to force-populate it until the 15/MM (maybe with a condition that do not stop until the date is 15*)
-
     # set the start_date
     # init today in order to init current year
     today = pd.Timestamp.now()
@@ -223,6 +221,8 @@ def populate_rows(shifts, filename):
     if start_date_month == 12:
         end_date_month = 1
         end_date_year = today.year + 1
+    else:
+        end_date_month = start_date_month + 1
 
     # set the end_date
     end_date = pd.Timestamp(
@@ -237,12 +237,14 @@ def populate_rows(shifts, filename):
 
         shift_itr = 0
         for single_date in date_range:
+            print(f'handling: {shifts[shift_itr]}')
             try:
                 # get start_time + end_time by the shift's type(Morning, Evening, etc.)
                 start_time, end_time = get_shift_times(shifts[shift_itr])
 
                 csv_writer.writerow(
                     [shifts[shift_itr], single_date, start_time, single_date, end_time, "TRUE"])
+
                 shift_itr += 1
             except Exception as e:
                 print(
